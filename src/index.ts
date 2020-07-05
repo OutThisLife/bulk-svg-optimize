@@ -1,4 +1,4 @@
-import fs, { unlink } from 'fs'
+import fs from 'fs'
 import globby from 'globby'
 import { resolve } from 'path'
 import SVGo from 'svgo'
@@ -9,7 +9,6 @@ const readFile = promisify(fs.readFile)
 const rmdir = promisify(fs.rmdir)
 const writeFile = promisify(fs.writeFile)
 const mkdir = promisify(fs.mkdir)
-const unlink = promisify(fs.unlink)
 
 const distDir = resolve(__dirname, '../dist')
 
@@ -80,26 +79,23 @@ const svgo = new SVGo({
 })
 
 // https://regexr.com/
-export const camelize = (str: string) =>
+const camelize = (str: string) =>
   str
     .toLowerCase()
     .replace(/^--/, '')
     .replace(/[^A-z0-9]+(.)/g, (_, c) => c.toUpperCase())
 
-const normalize = (path: string): Output | void => {
-  try {
-    const [, d, f] = path.match(/^src\/svg\/(.*)?\/(.*)?\.svg/)
+const normalize = (path: string): Output => {
+  const [d, f] = path.split(/([\w\s]+?)(?:\.svg$)/g)
 
-    return {
-      from: path,
-      to: resolve(distDir, camelize(d)),
-      name: camelize(f)
-    }
-  } catch (_) {}
+  return {
+    to: resolve(distDir, d.replace('src/svg/', '')),
+    name: camelize(f)
+  }
 }
 
 const init = async () => {
-  const files = await globby('**/*.svg')
+  const files = await globby('./src/svg/**/*.svg')
 
   try {
     if (await exists(distDir)) {
@@ -115,22 +111,16 @@ const init = async () => {
 
   for await (const f of files) {
     try {
-      const res = await normalize(f)
+      const { name, to } = await normalize(f)
+      const input = await readFile(f, 'utf-8')
+      const { data } = await svgo.optimize(input)
 
-      if (res) {
-        const { name, from, to } = res
-        const input = await readFile(from, 'utf-8')
-        const { data } = await svgo.optimize(input)
-
-        if (!(await exists(to))) {
-          console.log('Making', to)
-          await mkdir(to, { recursive: true })
-        }
-
-        await writeFile(resolve(to, `${name}.svg`), data, {
-          flag: 'w'
-        })
+      if (!(await exists(to))) {
+        console.log('Making', to)
+        await mkdir(to, { recursive: true })
       }
+
+      await writeFile(resolve(to, `${name}.svg`), data)
     } catch (err) {
       console.error(f, err)
     }
@@ -142,7 +132,6 @@ const init = async () => {
 init()
 
 interface Output {
-  from: string
   to: string
   name: string
 }
