@@ -2,3 +2,5 @@ node_modules/
 *.log
 .cache/
 dist/
+src/svg
+!src/svg.gitkeep
