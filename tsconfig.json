@@ -3,6 +3,7 @@
     "target": "esnext",
     "module": "commonjs",
     "allowJs": false,
+    "lib": ["esnext", "ES2015.Iterable"],
     "moduleResolution": "node",
     "strictNullChecks": false,
     "allowSyntheticDefaultImports": true,

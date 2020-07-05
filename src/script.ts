@@ -86,7 +86,7 @@ export const camelize = (str: string) =>
     .replace(/^--/, '')
     .replace(/[^A-z0-9]+(.)/g, (_, c) => c.toUpperCase())
 
-const normalize = (path: string): Maybe<Output> => {
+const normalize = (path: string): Output | void => {
   try {
     const [, d, f] = path.match(/^src\/svg\/(.*)?\/(.*)?\.svg/)
 
