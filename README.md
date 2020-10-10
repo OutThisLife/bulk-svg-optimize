@@ -7,7 +7,7 @@ This runs through every SVG you put in `svg/` and cleans them up by running thro
 1. Place all SVGs in `svg/`
 2. Run `npm run build`
 
-SVGO Settings are set to:
+## SVGO Settings are set to:
 
 - cleanupAttrs
 - cleanupEnableBackground
