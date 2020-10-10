@@ -1,7 +1,6 @@
 node_modules/
 *.log
-.cache/
 dist/
 bin/
 src/svg
-!src/svg.gitkeep
+!src/svg/.gitkeep

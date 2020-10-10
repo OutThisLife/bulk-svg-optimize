@@ -12,15 +12,13 @@
     "removeComments": false,
     "preserveConstEnums": true,
     "skipLibCheck": true,
-    "baseUrl": "./src",
-    "rootDirs": ["./src"],
-    "typeRoots": ["./node_modules/@types"],
+    "baseUrl": "src",
+    "rootDirs": ["src"],
     "strict": false,
     "forceConsistentCasingInFileNames": true,
     "noEmit": false,
     "esModuleInterop": true,
     "resolveJsonModule": true
   },
-  "include": ["src/**/*"],
   "exclude": ["node_modules"]
 }
