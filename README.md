@@ -1,8 +1,13 @@
 # Bulk SVG Optimizer
 
-This runs through every SVG you put in `src/` and cleans them up by running through SVGO w/ opinionated settings, and renaming to camelCase, as well as removing any hardset colours in fill or stroke to `currentColor`.
+This runs through every SVG you put in `svg/` and cleans them up by running through SVGO w/ opinionated settings, and renaming to camelCase, as well as removing any hardset colours in fill or stroke to `currentColor`.
 
-Settings are set to:
+## How to use
+
+1. Place all SVGs in `svg/`
+2. Run `npm run build`
+
+SVGO Settings are set to:
 
 - cleanupAttrs
 - cleanupEnableBackground
